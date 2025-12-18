@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Moja Aplikacja DevOps</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding-top: 50px; background-color: #f4f4f9; }
+        h1 { color: #2c3e50; }
+        .info {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 20px;
+            display: inline-block;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="info">
+        <h1>Cześć Artur! 👋</h1>
+        <p>To jest wersja z osobnym plikiem HTML.</p>
+        <hr>
+        <p><strong>Serwer (Hostname):</strong> {{ hostname }}</p>
+        <p><strong>Aktualna godzina:</strong> {{ now }}</p>
+        <p style="color: green;">Status: Działa poprawnie!</p>
+    </div>
+</body>
+</html>
