@@ -1,0 +1,56 @@
+name: Build, Scan and Push Docker Image
+
+# Kiedy uruchomić pipeline?
+on:
+  push:
+    branches: [ "main" ] # Przy każdym wypchnięciu kodu na gałąź 'main'
+  workflow_dispatch: # Pozwala też uruchomić ręcznie przyciskiem
+
+jobs:
+  build-secure-push:
+    runs-on: ubuntu-latest # GitHub udostępnia nam maszynę z Linuxem
+
+    steps:
+      # 1. Pobranie Twojego kodu z repozytorium
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Logowanie do Docker Hub (używając ukrytych sekretów)
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # 3. Konfiguracja środowiska do budowania Dockerów
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # 4. Budowanie obrazu (ale jeszcze nie wysyłanie!)
+      # Budujemy go lokalnie na maszynie GitHuba, żeby skaner mógł go sprawdzić
+      - name: Build and export
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          load: true # Załaduj obraz do lokalnego Dockera
+          tags: ${{ secrets.DOCKER_USERNAME }}/flask-app:latest
+
+      # 5. DevSecOps: Skanowanie obrazu narzędziem Trivy
+      # To jest Twój "Security Gate".
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: '${{ secrets.DOCKER_USERNAME }}/flask-app:latest'
+          format: 'table'
+          exit-code: '1' # Jeśli znajdziesz błędy krytyczne -> PRZERWIJ PIPELINE (fail)
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+
+      # 6. Wypchnięcie do Docker Hub (tylko jeśli skanowanie przeszło pomyślnie)
+      - name: Push image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/flask-app:latest
