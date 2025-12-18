@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <title>Moja Aplikacja DevOps</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding-top: 50px; background-color: #f4f4f9; }
+        body { font-family: Arial, sans-serif;
+        text-align: center;
+        padding-top: 50px;
+        background-color: #f4f4f9;
+        transition: background-color 0.5s ease;}
         h1 { color: #2c3e50; }
         .info {
             background: white;
@@ -14,16 +18,47 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
-<body>
+<body id="body-bg">
     <div class="info">
         <h1>Cześć Artur! 👋</h1>
-        <p>To jest wersja z osobnym plikiem HTML.</p>
+        <p>To jest wersja z osobnym plikiem HTML i javaScrpitem.</p>
         <hr>
         <p><strong>Serwer (Hostname):</strong> {{ hostname }}</p>
         <p><strong>Aktualna godzina:</strong> {{ now }}</p>
         <p style="color: green;">Status: Działa poprawnie!</p>
+
+        <button onclick="zmienKolor()">Kliknij, aby zmień kolor</button>
     </div>
+    <script>
+        function zmienKolor() {
+            // 1. Znajdź elementy po ich ID
+            var body = document.getElementById('body-bg');
+            var tekst = document.getElementById('greeting-text');
+
+            // 2. Generuj losowy kolor tła
+            // To prosta matematyka generująca kod koloru np. #A3F122
+            var losowyKolor = '#' + Math.floor(Math.random()*16777215).toString(16);
+
+            // 3. Zmień style i tekst
+            body.style.backgroundColor = losowyKolor;
+            tekst.innerText = "Wow! Zmieniłeś kolor! 🎨";
+            tekst.style.color = "white"; // Zmieniamy też kolor tekstu na biały dla kontrastu
+        }
+    </script>
 </body>
 </html>
