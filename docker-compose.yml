@@ -17,9 +17,11 @@ services:
     container_name: nginx-proxy
     restart: always
     ports:
-      - "80:80" # Wystawiamy port 80 na świat
+      - "80:80"
+      - "443:443" # Wystawiamy port 80 na świat
     volumes:
       # Wstrzykujemy nasz plik konfiguracyjny do kontenera
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
     depends_on:
       - app # Nginx wystartuje dopiero, jak App będzie gotowa
