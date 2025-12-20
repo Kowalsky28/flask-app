@@ -2,63 +2,122 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Moja Aplikacja DevOps</title>
+    <title>CV - Artur</title>
     <style>
-        body { font-family: Arial, sans-serif;
-        text-align: center;
-        padding-top: 50px;
-        background-color: #f4f4f9;
-        transition: background-color 0.5s ease;}
-        h1 { color: #2c3e50; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            padding-top: 30px;
+            padding-bottom: 50px;
+            background-color: #f4f4f9;
+            transition: background-color 0.5s ease;
+            margin: 0;
+        }
+
+        h1 { color: #2c3e50; margin-top: 0; }
+        h2 { color: #007bff; margin-bottom: 20px; }
+
+        /* Klasa dla białych paneli - używamy jej wielokrotnie */
         .info {
             background: white;
             border: 1px solid #ddd;
-            padding: 20px;
-            display: inline-block;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+
+            /* To centruje panel i ogranicza jego szerokość */
+            max-width: 900px;
+            margin: 20px auto;
+            display: block;
         }
+
         button {
-            margin-top: 20px;
-            padding: 10px 20px;
+            padding: 12px 24px;
             font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-primary {
             background-color: #007bff;
             color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+            margin-top: 15px;
         }
-        button:hover {
-            background-color: #0056b3;
+        .btn-primary:hover { background-color: #0056b3; }
+
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+            margin-bottom: 20px;
+        }
+        .btn-success:hover { background-color: #218838; }
+
+        hr { border: 0; border-top: 1px solid #eee; margin: 20px 0; }
+
+        /* Styl dla podglądu PDF */
+        .pdf-container {
+            border: 1px solid #ccc;
+            height: 800px; /* Wysokość podglądu */
+            width: 100%;
+            border-radius: 4px;
         }
     </style>
 </head>
-<body id="body-bg">
-    <div class="info">
-        <h1>Cześć Artur! 👋</h1>
-        <p>To jest wersja z osobnym plikiem HTML i javaScrpitem.</p>
-        <hr>
-        <p><strong>Serwer (Hostname):</strong> {{ hostname }}</p>
-        <p><strong>Aktualna godzina:</strong> {{ now }}</p>
-        <p style="color: green;">Status: Działa poprawnie!</p>
 
-        <button onclick="zmienKolor()">Kliknij, aby zmień kolor</button>
+<body id="body-bg">
+
+    <div class="info">
+        <h1 id="greeting-text">Cześć! 👋</h1>
+        <p style="color: #666;">Poniżej znajduje się moje CV. Zachęcam do zapoznania się! ;)</p>
+
+        <hr>
+
+        <!--<p><strong>Serwer (Hostname):</strong> {{ hostname }}</p>-->
+        <p><strong>Aktualna godzina:</strong> {{ now }}</p>
+
+        <button class="btn-primary" onclick="zmienKolor()">🎨 Zmień motyw tła 🎨</button>
     </div>
+
+    <div class="info">
+        <h2>Moje CV 📄</h2>
+
+        <p style="margin-bottom: 15px;">
+            Poniżej znajduje się podgląd mojego doświadczenia.<br>
+            Jeśli nie widzisz dokumentu, możesz go pobrać.
+        </p>
+
+        <a href="{{ url_for('static', filename='cv.pdf') }}" target="_blank" style="text-decoration: none;">
+            <button class="btn-success">📥 Pobierz CV / Otwórz w nowym oknie</button>
+        </a>
+
+        <div class="pdf-container">
+            <embed
+                src="{{ url_for('static', filename='cv.pdf') }}"
+                type="application/pdf"
+                width="100%"
+                height="100%"
+            >
+                <!--<p>Twoja przeglądarka nie wspiera podglądu PDF.</p>-->
+            </embed>
+        </div>
+    </div>
+
     <script>
         function zmienKolor() {
-            // 1. Znajdź elementy po ich ID
             var body = document.getElementById('body-bg');
             var tekst = document.getElementById('greeting-text');
-
-            // 2. Generuj losowy kolor tła
-            // To prosta matematyka generująca kod koloru np. #A3F122
             var losowyKolor = '#' + Math.floor(Math.random()*16777215).toString(16);
 
-            // 3. Zmień style i tekst
             body.style.backgroundColor = losowyKolor;
             tekst.innerText = "Wow! Zmieniłeś kolor! 🎨";
-            tekst.style.color = "white"; // Zmieniamy też kolor tekstu na biały dla kontrastu
+
+            // Opcjonalnie: zmiana koloru tekstu w zależności od tła
+            // ale zostawmy prosto
         }
     </script>
+
 </body>
 </html>

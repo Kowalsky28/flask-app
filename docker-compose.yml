@@ -4,7 +4,9 @@ services:
   # USŁUGA 1: Twoja aplikacja (Backend)
   app:
     # Pobieramy Twój gotowy obraz z Docker Hub
-    image: arko2811/flask-app:latest
+    image: arko2811/flask-
+
+    app:latest
     container_name: flask-backend
     restart: always
     # UWAGA: Nie wystawiamy tutaj "ports", bo nie chcemy,
